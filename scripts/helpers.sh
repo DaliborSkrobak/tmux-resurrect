@@ -84,6 +84,12 @@ is_session_grouped() {
 # pane content file helpers
 
 pane_contents_create_archive() {
+	# making backups of pane_contents_archive_file
+	test -f "$(pane_contents_archive_file).3" || rm "$(pane_contents_archive_file).3"
+	test -f "$(pane_contents_archive_file).2" || mv "$(pane_contents_archive_file).2" "$(pane_contents_archive_file).3"
+	test -f "$(pane_contents_archive_file).1" || mv "$(pane_contents_archive_file).1" "$(pane_contents_archive_file).1"
+	test -f "$(pane_contents_archive_file)"   || mv "$(pane_contents_archive_file)"   "$(pane_contents_archive_file).1"
+
 	tar cf - -C "$(resurrect_dir)/save/" ./pane_contents/ |
 		gzip > "$(pane_contents_archive_file)"
 }
